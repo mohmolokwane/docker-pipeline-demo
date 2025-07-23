@@ -1,0 +1,63 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/mohmolokwane/docker-pipeline-demo
+  pullPolicy: IfNotPresent
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext:
+  enabled: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+
+resources: {}
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+config:
+  message: "Hello from Docker!"
+  
+env:
+  DATABASE_URL: "sqlite:///./books.db"
+  LOG_LEVEL: "INFO"
+  PAGE_SIZE: "10"
+  APP_ENV: "production"
+  HOST: "0.0.0.0"
+  PORT: "80"
+  RELOAD: "False"
+  ALLOWED_ORIGINS: "*"
+  DB_POOL_SIZE: "5"
+  DB_MAX_OVERFLOW: "10"
+  LOG_FORMAT: "%(levelname)s:%(name)s:%(message)s"

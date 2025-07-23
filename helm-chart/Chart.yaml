@@ -1,0 +1,5 @@
+apiVersion: v2
+name: docker-pipeline-demo
+description: Helm chart for deploying the Docker pipeline demo
+version: 0.1.0
+appVersion: "1.0.0"
