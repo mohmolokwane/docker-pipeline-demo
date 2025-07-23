@@ -6,7 +6,8 @@ on:
       - main
   pull_request:
     branches:
-       - main
+      - main
+
 env:
   IMAGE_TAG: latest
   AWS_REGION: us-east-1
@@ -25,6 +26,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -45,35 +47,29 @@ jobs:
           pip install pytest pytest-cov
           pytest -v --cov=app --cov-report=xml --junitxml=results.xml || true
 
-  sonarqube:
-    name: SonarQube
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
-          
+
       - name: Configure AWS Credentials (Access Key)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         aws-region: ${{ env.AWS_REGION }}
-
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        
+
       - name: Create ECR repository if not exists
         run: |
-         aws ecr describe-repositories --repository-names docker-pipeline-demo || \
-         aws ecr create-repository --repository-name docker-pipeline-demo
+          aws ecr describe-repositories --repository-names docker-pipeline-demo || \
+          aws ecr create-repository --repository-name docker-pipeline-demo
 
       - name: Build and Push Docker Image to ECR
         run: |
@@ -90,12 +86,10 @@ jobs:
         run: aws eks update-kubeconfig --region us-east-1 --name Production
 
       - name: Deploy to EKS using Helm
-      - name: Set ECR_REPO_URI
-        run: echo "ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}" >> $GITHUB_ENV
-
-              helm upgrade --install Pythonv11 ./helm-chart
-              --namespace production \  
-              --create-namespace \
-              --set image.repository=$ECR_REPO_URI \ 
-              --set image.tag=latest
-
+        run: |
+          echo "ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}" >> $GITHUB_ENV
+          helm upgrade --install Pythonv11 ./helm-chart \
+            --namespace production \
+            --create-namespace \
+            --set image.repository=$ECR_REPO_URI \
+            --set image.tag=latest
