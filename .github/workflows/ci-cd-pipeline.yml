@@ -96,5 +96,5 @@ jobs:
           helm upgrade --helm-chart \
             --namespace $KUBE_NAMESPACE \
             --create-namespace \
-            --set image.repository=$ECR_REPO_URI \
+            --set image.repository=$ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com/docker-pipeline-demo
             --set image.tag=$IMAGE_TAG
