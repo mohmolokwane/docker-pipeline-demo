@@ -91,7 +91,7 @@ jobs:
 
       - name: Deploy to EKS using Helm
         run: |
-              ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com/docker-pipeline-demo
+              ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com
               helm upgrade --install  ./helm-chart
               --namespace production \
               --create-namespace \
