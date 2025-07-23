@@ -94,8 +94,8 @@ jobs:
         run: |
           ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}
           helm upgrade --install docker-pipeline-demo ./helm-chart
-            --namespace $KUBE_NAMESPACE \
-            --create-namespace \
-            --set image.repository=$ECR_REPO_URI \
-            --set image.tag=$IMAGE_TAG
+             --namespace docker-pipeline \
+             --create-namespace \
+             --set image.repository=my-app \
+             --set image.tag=latest
 
