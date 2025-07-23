@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
-meta
+metadata:
   name: {{ include "docker-pipeline-demo.fullname" . }}
   labels:
     {{- include "docker-pipeline-demo.labels" . | nindent 4 }}
+
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
