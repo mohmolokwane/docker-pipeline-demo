@@ -5,7 +5,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo-service
+    app: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo
   ports:
     - protocol: TCP
       port: 80
