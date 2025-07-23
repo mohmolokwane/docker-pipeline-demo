@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   labels:
-    app: {{ .Chart.Name }}
+    app: docker-pipeline-demo
 
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: docker-pipeline-demo
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -17,7 +17,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app: {{ .Chart.Name }}
+        app: docker-pipeline-demo
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
