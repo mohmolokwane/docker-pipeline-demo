@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ""
+  repository: bmolokwane/bookstore-ap
   pullPolicy: IfNotPresent
   tag: latest
 
@@ -28,10 +28,11 @@ service:
   port: 80
 
 ingress:
-  enabled: false
-  annotations: {}
+  enabled: true
+  annotations:
+     nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
-    - host: chart-example.local
+    - host: chart-example.com
       paths: []
   tls: []
 
