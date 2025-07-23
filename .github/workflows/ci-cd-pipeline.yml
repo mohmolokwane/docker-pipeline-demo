@@ -47,14 +47,6 @@ jobs:
           pip install pytest pytest-cov
           pytest -v --cov=app --cov-report=xml --junitxml=results.xml || true
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
-
       - name: Configure AWS Credentials (Access Key)
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -77,6 +69,14 @@ jobs:
           docker build -t $ECR_REPO_URI:${{ env.IMAGE_TAG }} .
           docker push $ECR_REPO_URI:${{ env.IMAGE_TAG }}
 
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
@@ -88,7 +88,7 @@ jobs:
       - name: Deploy to EKS using Helm
         run: |
           echo "ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}" >> $GITHUB_ENV
-          helm upgrade --install Pythonv11 ./helm-chart \
+          helm upgrade --install docker-pipeline-demo ./helm-chart \
             --namespace production \
             --create-namespace \
             --set image.repository=$ECR_REPO_URI \
