@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/mohmolokwane/docker-pipeline-demo
+  repository: ""
   pullPolicy: IfNotPresent
   tag: latest
 
