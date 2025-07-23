@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: docker-pipeline-demo-ingress
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo-service
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -12,6 +12,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: docker-pipeline-demo
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo-service
                 port:
                   number: 80
