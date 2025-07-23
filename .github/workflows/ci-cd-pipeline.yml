@@ -90,11 +90,12 @@ jobs:
       - name: Update kubeconfig for EKS
         run: aws eks update-kubeconfig --region us-east-1 --name Production
 
-      - name: Deploy to EKS using Helm
-        run: |
-          ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}
-          helm upgrade --helm-chart \
-            --namespace $KUBE_NAMESPACE \
-            --create-namespace \
-            --set image.repository=$ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com/docker-pipeline-demo
-            --set image.tag=$IMAGE_TAG
+      - name: Deploy with Helm
+      - run: 
+          ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com/docker-pipeline-demo
+          helm upgrade --install docker-pipeline-demo ./helm-chart \
+          --namespace docker-pipeline \
+          --create-namespace \
+          --set image.repository=$ECR_REPO_URI \
+          --set image.tag=latest
+
