@@ -1,15 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: {{ .Release.Name }}
+metadata: |
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo
   labels:
-    app: docker-pipeline-demo
-
+    app: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: docker-pipeline-demo
+      app: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -17,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app: docker-pipeline-demo
+        app: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
