@@ -90,7 +90,7 @@ jobs:
         run: aws eks update-kubeconfig --region us-east-1 --name Production
 
       - name: Deploy to EKS using Helm
-        run: |
+        run: 
               ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com
               helm upgrade --install  ./helm-chart
               --namespace production \
