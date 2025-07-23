@@ -3,10 +3,10 @@ name: CI/CD Pipeline to EKS
 on:
   push:
     branches: 
-      -main
+      - main
   pull_request:
     branches:
-       -main
+       - main
 env:
   IMAGE_TAG: latest
   AWS_REGION: us-east-1
@@ -90,11 +90,12 @@ jobs:
         run: aws eks update-kubeconfig --region us-east-1 --name Production
 
       - name: Deploy to EKS using Helm
-        run: 
-              ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com
-              helm upgrade --install  ./helm-chart
-              --namespace production \
+      - name: Set ECR_REPO_URI
+        run: echo "ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}" >> $GITHUB_ENV
+
+              helm upgrade --install Pythonv11 ./helm-chart
+              --namespace production \  
               --create-namespace \
-              --set image.repository=$ECR_REPO_URI \
+              --set image.repository=$ECR_REPO_URI \ 
               --set image.tag=latest
 
