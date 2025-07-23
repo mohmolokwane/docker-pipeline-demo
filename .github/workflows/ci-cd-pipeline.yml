@@ -79,8 +79,6 @@ jobs:
           ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}
           docker build -t $ECR_REPO_URI:${{ env.IMAGE_TAG }} .
           docker push $ECR_REPO_URI:${{ env.IMAGE_TAG }}
-        env:
-          ECR_REPO_URI: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
@@ -93,7 +91,7 @@ jobs:
       - name: Deploy to EKS using Helm
         run: |
           ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}
-          helm upgrade --install docker-pipeline-demo ./helm-chart
+          helm upgrade --install docker-pipeline-demo ./helm-chart \
             --namespace $KUBE_NAMESPACE \
             --create-namespace \
             --set image.repository=$ECR_REPO_URI \
