@@ -88,7 +88,7 @@ jobs:
       - name: Deploy to EKS using Helm
         run: |
           echo "ECR_REPO_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPO_NAME }}" >> $GITHUB_ENV
-          helm upgrade --install R ./helm-chart \
+          helm upgrade --install dock ./helm-chart \
             --namespace production \
             --create-namespace \
             --set image.repository=$ECR_REPO_URI \
