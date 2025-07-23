@@ -92,7 +92,7 @@ jobs:
         run: |
               ECR_REPO_URI=***.dkr.ecr.us-east-1.amazonaws.com/docker-pipeline-demo
     
-              helm upgrade --install helm-chart \
+              helm upgrade --install docker-pipeline-demo helm-chart \
               --namespace production \
               --create-namespace \
               --set image.repository=$ECR_REPO_URI \
