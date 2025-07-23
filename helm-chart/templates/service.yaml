@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: docker-pipeline-demo-service
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo-service
 spec:
   type: LoadBalancer
   selector:
-    app: docker-pipeline-demo
+    app: {{ .Release.Name }}-{{ .Chart.Name }}-docker-pipeline-demo-service
   ports:
     - protocol: TCP
       port: 80
